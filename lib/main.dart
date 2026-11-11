@@ -1,13 +1,16 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'tela_listagem.dart';
+
+import 'core/tema.dart';
+import 'features/auth/tela_login.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // No Android o sqflite funciona direto.
-  // No Windows (e Linux) precisamos do sqflite_common_ffi para o SQLite funcionar.
+  // No Windows e no Linux o SQLite precisa do sqflite_common_ffi.
+  // No Android, o sqflite já funciona direto.
   if (Platform.isWindows || Platform.isLinux) {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
@@ -24,8 +27,10 @@ class MeuApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pet Shop',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: Colors.teal, useMaterial3: true),
-      home: const TelaListagem(),
+      theme: criarTema(Brightness.light),
+      darkTheme: criarTema(Brightness.dark),
+      themeMode: ThemeMode.system,
+      home: const TelaLogin(),
     );
   }
 }
